@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - Character
+  - Coin
+  - powerup
   layers:
   - Default
   - TransparentFX

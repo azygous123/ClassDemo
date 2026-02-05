@@ -8,12 +8,14 @@ public class EnemyAI : MonoBehaviour
 
     GameObject player; // track the main player 
    // Transform 
-
+   bool isDead = false;
 
     bool isPlayerDetected = false; // not detected yet
     bool isAttacking = false;
 
-    float detectionRange = 1.2f; 
+    float detectionRange = 1.2f;
+
+    public CoinManager cm;
 
 
 
@@ -58,6 +60,39 @@ public class EnemyAI : MonoBehaviour
                 isPlayerDetected = false;
             }
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (isDead) return;
+        else if (collision.gameObject.CompareTag("Character"))
+        {
+            //Debug.Log("Enemy collided with player");
+            // Damage player logic here
+            float playerBottom = collision.collider.bounds.min.y;
+            float enemyTop = this.GetComponent<Collider2D>().bounds.max.y;
+
+            if (playerBottom > enemyTop - 0.1f)
+            {
+                cm.diecount++;
+                Die();
+            }
+
+        }
+
+    }
+
+    private void Die()
+    {
+        if (isDead) return;
+        isDead = true;
+        rb.linearVelocity  = Vector2.zero;
+        rb.simulated = false;
+        GetComponent<Collider2D>().enabled = false;
+
+        animator.SetTrigger("Death");
+        Destroy(gameObject, 1.0f); // destroy after 1 second to allow death animation to play
+
     }
 
 }

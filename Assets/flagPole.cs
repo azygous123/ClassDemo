@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using TMPro;
 public class flagPole : MonoBehaviour
 {
     private Vector2 pos;
@@ -9,8 +9,9 @@ public class flagPole : MonoBehaviour
     private float flagHeight;
     private float flagWidth;
 
-    private bool dropFlag = false; 
+    private bool dropFlag = false;
 
+    public TextMeshProUGUI winScreen;
     public Char_Anim player;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -23,7 +24,7 @@ public class flagPole : MonoBehaviour
         flagWidth = flag.GetComponent<SpriteRenderer>().bounds.size.x;
 
         flag.transform.position = new Vector2(pos.x - flagWidth/2, pos.y + height * 7 / 16 - flagHeight / 2);
-    
+        winScreen.enabled = false;
         }
 
 
@@ -35,12 +36,12 @@ public class flagPole : MonoBehaviour
             player.moveSpeed = 0f;
             player.jumpForce = 0f;
             dropFlag = true;
+            winScreen.enabled = true;
         }
     }
     // Update is called once per frame
     void Update()
-    {
-        
+    {   
         if (dropFlag && flag.transform.position.y > pos.y - height / 2 + flagHeight / 2)
         {
             float dis = -2f * Time.deltaTime;
